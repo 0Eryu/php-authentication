@@ -6,6 +6,8 @@ namespace Authentication;
 
 use Entity\User;
 use Html\StringEscaper;
+use Authentication\Exception\AuthenticationException;
+use Service\Session;
 
 class UserAuthentication
 {
@@ -18,9 +20,9 @@ class UserAuthentication
     private const SESSION_USER_KEY = 'user';
 
     /**
-     * @var User Utilisateur
+     * @var User|null Utilisateur null par défaut.
      */
-    private User $user;
+    private ?User $user = null;
 
     /**
      * @param string $action
@@ -50,5 +52,16 @@ class UserAuthentication
         }
 
         return $user;
+    }
+
+    /**
+     * @param User $user Utilisateur.
+     * @return void
+     * @throws \Service\Exception\SessionException
+     */
+    protected function setUser(User $user) : void
+    {
+        Session::start();
+        $this->user = $user;
     }
 }
