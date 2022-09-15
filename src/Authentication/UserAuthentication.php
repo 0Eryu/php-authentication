@@ -14,6 +14,9 @@ class UserAuthentication
     private const LOGIN_INPUT_NAME = 'login';
     private const PASSWORD_INPUT_NAME = 'password';
 
+    private const SESSION_KEY = '__UserAuthentication__';
+    private const SESSION_USER_KEY = 'user';
+
     /**
      * @param string $action
      * @param string $submitText
