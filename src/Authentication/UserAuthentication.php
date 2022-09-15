@@ -94,4 +94,14 @@ class UserAuthentication
         HTML;
 
     }
+
+    /**
+     * @return void
+     */
+    public function logoutIsRequested() : void
+    {
+        if (isset($_SESSION[self::SESSION_KEY][self::SESSION_USER_KEY])) {
+            unset($_SESSION[self::SESSION_KEY][self::SESSION_USER_KEY]);
+        }
+    }
 }
