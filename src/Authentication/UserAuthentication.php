@@ -19,7 +19,7 @@ class UserAuthentication
      * @param string $submitText
      * @return string Formulaire de connexion.
      */
-    public function loginForm(string $action, string $submitText = 'OK') : string
+    public function loginForm(string $action, string $submitText = 'OK'): string
     {
         $login = self::LOGIN_INPUT_NAME;
         $password = self::PASSWORD_INPUT_NAME;
@@ -33,11 +33,11 @@ class UserAuthentication
         HTML;
     }
 
-    public function getUserFromAuth() : User
+    public function getUserFromAuth(): User
     {
         $user = User::findByCredentials($_POST[self::LOGIN_INPUT_NAME], $_POST[self::PASSWORD_INPUT_NAME]);
 
-        if ($user === False){
+        if ($user === false) {
             throw new AuthenticationException('Le couple login-mot de passe est incorrect.');
         }
 

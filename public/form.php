@@ -11,14 +11,16 @@ $authentication = new UserAuthentication();
 $p = new WebPage('Authentification');
 
 // Production du formulaire de connexion
-$p->appendCSS(<<<CSS
+$p->appendCSS(
+    <<<CSS
     form input {
         width : 4em ;
     }
 CSS
 );
 $form = $authentication->loginForm('auth.php');
-$p->appendContent(<<<HTML
+$p->appendContent(
+    <<<HTML
     {$form}
     <p>Pour faire un test : essai/toto
 HTML
