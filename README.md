@@ -1,6 +1,7 @@
 # Authentifier des utilisateurs et simuler un mode connecté
 
 ## Auteur(s)
+PLUCHART Evan
 
 ## Installation / Configuration
 
