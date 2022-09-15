@@ -18,6 +18,11 @@ class UserAuthentication
     private const SESSION_USER_KEY = 'user';
 
     /**
+     * @var User Utilisateur
+     */
+    private User $user;
+
+    /**
      * @param string $action
      * @param string $submitText
      * @return string Formulaire de connexion.
