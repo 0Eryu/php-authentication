@@ -10,6 +10,7 @@ $authentication = new UserAuthentication();
 
 $p = new WebPage('Authentification');
 
+
 // Production du formulaire de connexion
 $p->appendCSS(
     <<<CSS

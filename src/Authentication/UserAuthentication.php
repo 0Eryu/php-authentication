@@ -17,7 +17,7 @@ class UserAuthentication
     private const PASSWORD_INPUT_NAME = 'password';
     private const SESSION_KEY = '__UserAuthentication__';
     private const SESSION_USER_KEY = 'user';
-    private const LOUGOUT_INPUT_NAME = 'logout';
+    private const LOGOUT_INPUT_NAME = 'logout';
 
     /**
      * @var User|null Utilisateur null par défaut.
@@ -68,10 +68,30 @@ class UserAuthentication
         $this->user = $user;
     }
 
+    /**
+     * @return bool
+     * @throws \Service\Exception\SessionException
+     */
     public function isUserConnected(): bool
     {
         Session::start();
         return isset($_SESSION[self::SESSION_KEY][self::SESSION_USER_KEY])
             && $_SESSION[self::SESSION_KEY][self::SESSION_USER_KEY] instanceof User;
+    }
+
+    /**
+     * @param string $action
+     * @param string $text
+     * @return string
+     */
+    public function logoutForm(string $action, string $text) : string
+    {
+        $logout = self::LOGOUT_INPUT_NAME;
+        return <<<HTML
+            <form action={$action} method="POST">
+                <input type="submit" value={$logout}>
+            </form>
+        HTML;
+
     }
 }
