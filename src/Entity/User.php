@@ -1,4 +1,5 @@
 <?php
+
 declare(strict_types=1);
 
 namespace Entity;
@@ -16,11 +17,11 @@ class User
     /**
      * @var string Prénom de l'utilisateur
      */
-    private string $firstname;
+    private string $firstName;
     /**
      * @var string Nom de famille de l'utilisateur
      */
-    private string $lastname;
+    private string $lastName;
     /**
      * @var string Mot de passe de l'utilisateur
      */
@@ -43,7 +44,7 @@ class User
      */
     public function getFirstname(): string
     {
-        return $this->firstname;
+        return $this->firstName;
     }
 
     /**
@@ -51,7 +52,7 @@ class User
      */
     public function getLastname(): string
     {
-        return $this->lastname;
+        return $this->lastName;
     }
 
     /**
@@ -78,7 +79,7 @@ class User
      * @param string $password Mot de passe de l'utilisateur.
      * @return User Utilisateur correspondant à l'identifiant et au mot de passe mis en paramètres.
      */
-    public static function findByCredentials(string $login, string $password) : User
+    public static function findByCredentials(string $login, string $password): User
     {
         $query = MyPdo::getInstance()->prepare(
             <<<SQL
@@ -98,5 +99,4 @@ class User
 
         return $user;
     }
-
 }
