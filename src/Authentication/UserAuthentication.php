@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Authentication;
 
+use Entity\User;
 use Html\StringEscaper;
 
 class UserAuthentication
@@ -30,6 +31,16 @@ class UserAuthentication
                 <input type="submit" value={$submitText}>
             </form>
         HTML;
+    }
 
+    public function getUserFromAuth() : User
+    {
+        $user = User::findByCredentials($_POST[self::LOGIN_INPUT_NAME], $_POST[self::PASSWORD_INPUT_NAME]);
+
+        if ($user === False){
+            throw new AuthenticationException('Le couple login-mot de passe est incorrect.');
+        }
+
+        return $user;
     }
 }
