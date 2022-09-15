@@ -89,6 +89,7 @@ class UserAuthentication
         $logout = self::LOGOUT_INPUT_NAME;
         return <<<HTML
             <form action={$action} method="POST">
+                <p>{$text}</p>
                 <input type="submit" value={$logout}>
             </form>
         HTML;
@@ -100,8 +101,11 @@ class UserAuthentication
      */
     public function logoutIsRequested() : void
     {
-        if (isset($_SESSION[self::SESSION_KEY][self::SESSION_USER_KEY])) {
-            unset($_SESSION[self::SESSION_KEY][self::SESSION_USER_KEY]);
+        if ($_POST[self::LOGOUT_INPUT_NAME]){
+            if (isset($_SESSION[self::SESSION_KEY][self::SESSION_USER_KEY])) {
+                unset($_SESSION[self::SESSION_KEY][self::SESSION_USER_KEY]);
+            }
         }
+
     }
 }
