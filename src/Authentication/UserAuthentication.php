@@ -59,9 +59,17 @@ class UserAuthentication
      * @return void
      * @throws \Service\Exception\SessionException
      */
-    protected function setUser(User $user) : void
+    protected function setUser(User $user): void
     {
         Session::start();
+        $_SESSION[self::SESSION_KEY][self::SESSION_USER_KEY] = $user;
         $this->user = $user;
+    }
+
+    public function isUserConnected(): bool
+    {
+        Session::start();
+        return isset($_SESSION[self::SESSION_KEY][self::SESSION_USER_KEY])
+            && $_SESSION[self::SESSION_KEY][self::SESSION_USER_KEY] instanceof User;
     }
 }
