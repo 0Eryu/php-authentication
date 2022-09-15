@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Authentication;
 
+use Authentication\Exception\NotLoggedInException;
 use Entity\User;
 use Html\StringEscaper;
 use Authentication\Exception\AuthenticationException;
@@ -23,6 +24,32 @@ class UserAuthentication
      * @var User|null Utilisateur null par défaut.
      */
     private ?User $user = null;
+
+    /**
+     * @throws \Service\Exception\SessionException
+     */
+    public function __construct()
+    {
+        try {
+            $user = $this->getUserFromSession();
+            $this->setUser($user);
+        } catch (NotLoggedInException $e) {
+            echo 'Exception reçue : ', $e->getMessage(), "\n";
+        }
+    }
+
+    /**
+     * @return User
+     * @throws NotLoggedInException
+     */
+    public function getUser() : User
+    {
+        if (!isset($this->user)){
+            throw new NotLoggedInException('L\'utilisateur que vous essayez de récupérer n\'est pas défini.');
+        }
+
+        return $this->user;
+    }
 
     /**
      * @param string $action
@@ -107,8 +134,21 @@ class UserAuthentication
             if (isset($_SESSION[self::SESSION_KEY][self::SESSION_USER_KEY])) {
                 unset($_SESSION[self::SESSION_KEY][self::SESSION_USER_KEY]);
                 header('Location: /form.php');
+                exit();
             }
         }
 
+    }
+
+
+    public function getUserFromSession() : User
+    {
+        Session::start();
+        if (!(isset($_SESSION[self::SESSION_KEY][self::SESSION_USER_KEY])
+            && $_SESSION[self::SESSION_KEY][self::SESSION_USER_KEY] instanceof User)){
+            throw new NotLoggedInException('L\'utilisateur n\'est pas connecté.');
+        }
+
+        return $_SESSION[self::SESSION_KEY][self::SESSION_USER_KEY];
     }
 }
