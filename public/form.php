@@ -28,6 +28,7 @@ if (!$authentication->isUserConnected()) {
     HTML
     );
 } else{
+    $authentication->logoutIsRequested();
     $form = $authentication->logoutForm('form.php', 'Se déconnecter');
     $p->appendContent(
         <<<HTML
@@ -35,6 +36,8 @@ if (!$authentication->isUserConnected()) {
         HTML
 
     );
+
+
 }
 
 
