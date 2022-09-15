@@ -51,6 +51,8 @@ class UserAuthentication
             throw new AuthenticationException('Le couple login-mot de passe est incorrect.');
         }
 
+        $this->setUser($user);
+
         return $user;
     }
 
