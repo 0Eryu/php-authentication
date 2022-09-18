@@ -78,6 +78,7 @@ class User
      * @param string $login Identifiant de l'utilisateur.
      * @param string $password Mot de passe de l'utilisateur.
      * @return User Utilisateur correspondant à l'identifiant et au mot de passe mis en paramètres.
+     * @throws EntityNotFoundException
      */
     public static function findByCredentials(string $login, string $password): User
     {

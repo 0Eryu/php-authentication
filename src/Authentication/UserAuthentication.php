@@ -5,9 +5,11 @@ declare(strict_types=1);
 namespace Authentication;
 
 use Authentication\Exception\NotLoggedInException;
+use Entity\Exception\EntityNotFoundException;
 use Entity\User;
 use Html\StringEscaper;
 use Authentication\Exception\AuthenticationException;
+use Service\Exception\SessionException;
 use Service\Session;
 
 class UserAuthentication
@@ -26,7 +28,7 @@ class UserAuthentication
     private ?User $user = null;
 
     /**
-     * @throws \Service\Exception\SessionException
+     * @throws SessionException
      */
     public function __construct()
     {
@@ -42,9 +44,9 @@ class UserAuthentication
      * @return User
      * @throws NotLoggedInException
      */
-    public function getUser() : User
+    public function getUser(): User
     {
-        if (!isset($this->user)){
+        if (!isset($this->user)) {
             throw new NotLoggedInException('L\'utilisateur que vous essayez de récupérer n\'est pas défini.');
         }
 
@@ -70,15 +72,20 @@ class UserAuthentication
         HTML;
     }
 
+    /**
+     * @return User
+     * @throws SessionException
+     * @throws EntityNotFoundException
+     */
     public function getUserFromAuth(): User
     {
-        $user = User::findByCredentials($_POST[self::LOGIN_INPUT_NAME], $_POST[self::PASSWORD_INPUT_NAME]);
+        try {
+            $user = User::findByCredentials($_POST[self::LOGIN_INPUT_NAME], $_POST[self::PASSWORD_INPUT_NAME]);
+            $this->setUser($user);
 
-        if ($user === false) {
-            throw new AuthenticationException('Le couple login-mot de passe est incorrect.');
+        } catch (AuthenticationException $e) {
+            echo 'Exception reçue : ', $e->getMessage(), "\n";
         }
-
-        $this->setUser($user);
 
         return $user;
     }
@@ -86,9 +93,9 @@ class UserAuthentication
     /**
      * @param User $user Utilisateur.
      * @return void
-     * @throws \Service\Exception\SessionException
+     * @throws SessionException
      */
-    protected function setUser(User $user): void
+    protected function setUser(?User $user): void
     {
         Session::start();
         $_SESSION[self::SESSION_KEY][self::SESSION_USER_KEY] = $user;
@@ -97,7 +104,7 @@ class UserAuthentication
 
     /**
      * @return bool
-     * @throws \Service\Exception\SessionException
+     * @throws SessionException
      */
     public function isUserConnected(): bool
     {
@@ -111,44 +118,44 @@ class UserAuthentication
      * @param string $text
      * @return string
      */
-    public function logoutForm(string $action, string $text) : string
+    public function logoutForm(string $action, string $text): string
     {
         $logout = self::LOGOUT_INPUT_NAME;
 
         return <<<HTML
             <form action={$action} method="POST">
-                <p>{$text}</p>
+                <label>{$text}</label>
                 <input type="submit" value={$logout} name={$logout} id={$logout}>
             </form>
         HTML;
-
-
     }
 
     /**
      * @return void
+     * @throws SessionException
      */
-    public function logoutIsRequested() : void
+    public function logoutIsRequested(): void
     {
-        if (isset($_POST[self::LOGOUT_INPUT_NAME])){
+        if (isset($_POST[self::LOGOUT_INPUT_NAME])) {
             if (isset($_SESSION[self::SESSION_KEY][self::SESSION_USER_KEY])) {
                 unset($_SESSION[self::SESSION_KEY][self::SESSION_USER_KEY]);
-                header('Location: /form.php');
-                exit();
+                $this->setUser(null);
             }
         }
-
     }
 
-
-    public function getUserFromSession() : User
+    /**
+     * @return User
+     * @throws NotLoggedInException
+     * @throws SessionException
+     */
+    public function getUserFromSession(): User
     {
-        Session::start();
-        if (!(isset($_SESSION[self::SESSION_KEY][self::SESSION_USER_KEY])
-            && $_SESSION[self::SESSION_KEY][self::SESSION_USER_KEY] instanceof User)){
+        if ($this->isUserConnected()) {
+            $user = $_SESSION[self::SESSION_KEY][self::SESSION_USER_KEY];
+        } else {
             throw new NotLoggedInException('L\'utilisateur n\'est pas connecté.');
         }
-
-        return $_SESSION[self::SESSION_KEY][self::SESSION_USER_KEY];
+        return $user;
     }
 }
