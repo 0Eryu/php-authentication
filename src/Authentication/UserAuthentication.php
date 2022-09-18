@@ -82,7 +82,6 @@ class UserAuthentication
         try {
             $user = User::findByCredentials($_POST[self::LOGIN_INPUT_NAME], $_POST[self::PASSWORD_INPUT_NAME]);
             $this->setUser($user);
-
         } catch (AuthenticationException $e) {
             echo 'Exception reçue : ', $e->getMessage(), "\n";
         }
