@@ -41,7 +41,7 @@ class UserAvatar
      * @return $this Chaine de caractère correspondant à un avatar au format PNG.
      * @throws EntityNotFoundException Utilisateur non trouvé avec l'identifiant placé en paramètre.
      */
-    public function findById(int $userId): self
+    public static function findById(int $userId): self
     {
         $query = MyPdo::getInstance()->prepare(
             <<<SQL

@@ -128,7 +128,7 @@ class UserAuthentication
         return <<<HTML
             <form action={$action} method="POST">
                 <label>{$text}</label>
-                <input type="submit" value={$logout} name={$logout} id={$logout}>
+                <input type="submit" value="{$logout}" name="{$logout}" id="{$logout}">
             </form>
         HTML;
     }

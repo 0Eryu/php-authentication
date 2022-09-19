@@ -15,7 +15,6 @@ $authentication = new UserAuthentication();
 $p = new WebPage('Authentification');
 
 try {
-    $userTest = $authentication->getUserFromSession();
     $authentication->logoutIsRequested();
     $form = $authentication->logoutForm('form.php', 'Se déconnecter');
     $user = $authentication->getUser();
@@ -31,10 +30,7 @@ try {
                 {$form}
             HTML
     );
-} catch (SessionException $e) {
-    $p->appendContent("Échec : {$e->getMessage()}");
 } catch (NotLoggedInException $e) {
-    // Production du formulaire de connexion
     $p->appendCSS(
         <<<CSS
                 form input {
@@ -49,8 +45,6 @@ try {
                 <p>Pour faire un test : essai/toto
             HTML
     );
-} catch (AuthenticationException $e) {
-    $p->appendContent("Échec d'authentification&nbsp;: {$e->getMessage()}");
 } catch (Exception $e) {
     $p->appendContent("Un problème est survenu&nbsp;: {$e->getMessage()}");
 }
