@@ -36,7 +36,6 @@ class UserAuthentication
             $user = $this->getUserFromSession();
             $this->setUser($user);
         } catch (NotLoggedInException $e) {
-            echo 'Exception reçue : ', $e->getMessage(), "\n";
         }
     }
 
@@ -75,15 +74,20 @@ class UserAuthentication
     /**
      * @return User
      * @throws SessionException
+     * @throws AuthenticationException
      * @throws EntityNotFoundException
      */
     public function getUserFromAuth(): User
     {
+        if (!isset($_POST[self::LOGIN_INPUT_NAME])
+            || !isset($_POST[self::PASSWORD_INPUT_NAME])) {
+            throw new AuthenticationException('Couple identifiant/mot de passe sont invalides');
+        }
         try {
             $user = User::findByCredentials($_POST[self::LOGIN_INPUT_NAME], $_POST[self::PASSWORD_INPUT_NAME]);
             $this->setUser($user);
-        } catch (AuthenticationException $e) {
-            echo 'Exception reçue : ', $e->getMessage(), "\n";
+        } catch (EntityNotFoundException $e) {
+            throw new AuthenticationException('Aucun utilisateur trouvé avec le couple identifiant/mot de passe fourni.');
         }
 
         return $user;

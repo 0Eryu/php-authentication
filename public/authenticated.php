@@ -21,7 +21,7 @@ $user = $authentication->getUserFromSession();
 $p->appendContent(
     <<<HTML
         <h1>Zone membre connecté</h1>
-        <p>Bienvenue {$user->getFirstname()}</p>
+        <p>Bienvenue <a href="/user.php">{$user->getFirstname()}</a></p>
         <h2>Page 1</h2>
 HTML
 );
