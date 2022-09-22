@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 use Authentication\Exception\NotLoggedInException;
 use Authentication\UserAuthentication;
-use Authentication\Exception\AuthenticationException;
+use Html\UserProfileWithAvatar;
 use Html\WebPage;
 
 $authentication = new UserAuthentication();
@@ -14,9 +14,12 @@ $p = new WebPage('Authentification');
 try {
     // Tentative de connexion
     $user = $authentication->getUserFromSession();
+    //$userProfile = new UserProfile($user);
+    $userProfile = new UserProfileWithAvatar($user, $_SERVER['PHP_SELF']);
     $p->appendContent(
         <<<HTML
             <div>Bonjour {$user->getFirstName()}</div>
+            {$userProfile->toHtml()}
         HTML
     );
 } catch (NotLoggedInException $e) {

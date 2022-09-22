@@ -8,7 +8,6 @@ use Entity\User;
 
 class UserProfileWithAvatar extends UserProfile
 {
-
     public const AVATAR_INPUT_NAME = 'avatar';
     /**
      * @var string
@@ -18,8 +17,9 @@ class UserProfileWithAvatar extends UserProfile
     /**
      * @param string $formAction
      */
-    public function __construct(string $formAction)
+    public function __construct(User $user, string $formAction)
     {
+        parent::__construct($user);
         $this->formAction = $formAction;
     }
 
@@ -33,7 +33,7 @@ class UserProfileWithAvatar extends UserProfile
                     <input type="file" name="{$avatarInputName}" id="{$avatarInputName}">
                     <input type="submit" value="Mettre à jour">
                 </form>
-                <img src="/avatar?userId={$this->user->getId()}" alt="Avatar de l'utilisateur"/>
+                <img src="/avatar.php?userId={$this->user->getId()}" alt="Avatar de l'utilisateur"/>
             HTML
         ;
 
