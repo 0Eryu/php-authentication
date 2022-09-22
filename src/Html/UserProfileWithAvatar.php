@@ -25,9 +25,14 @@ class UserProfileWithAvatar extends UserProfile
 
     public function toHtml(): string
     {
+        $avatarInputName = self::AVATAR_INPUT_NAME;
         $toHtml = parent::toHtml();
         $toHtml .=
             <<<HTML
+                <form action={$this->formAction} method="POST">
+                    <input type="file" name="{$avatarInputName}" id="{$avatarInputName}">
+                    <input type="submit" value="Mettre à jour">
+                </form>
                 <img src="/avatar?userId={$this->user->getId()}" alt="Avatar de l'utilisateur"/>
             HTML
         ;
