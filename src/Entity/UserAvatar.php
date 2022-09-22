@@ -53,13 +53,13 @@ class UserAvatar
 
         $query->execute([':userId' => $userId]);
         $query->setFetchMode(PDO::FETCH_CLASS|PDO::FETCH_PROPS_LATE, UserAvatar::class);
-        $user = $query->fetch();
+        $userAvatar = $query->fetch();
 
-        if ($user === false) {
+        if ($userAvatar === false) {
             throw new EntityNotFoundException('Aucun utilisateur correspondant à cet identifiant et à ce mot de passe a été trouvé dans la base de donnée');
         }
 
-        return $user;
+        return $userAvatar;
     }
 
     /**
@@ -68,6 +68,23 @@ class UserAvatar
     public function setAvatar(?string $avatar): void
     {
         $this->avatar = $avatar;
+    }
+
+    /**
+     * @return $this
+     * @throws EntityNotFoundException
+     */
+    public function save(): UserAvatar
+    {
+        $insert = MyPdo::getInstance()->prepare(
+            <<<SQL
+                INSERT INTO user (avatar)
+                VALUES(:avatar);
+            SQL
+        );
+
+        $insert->execute([':avatar' => $this->getAvatar()]);
+        return $this;
     }
 
 }
