@@ -6,6 +6,12 @@ namespace Html;
 
 class UserProfileWithAvatar extends UserProfile
 {
+    public const AVATAR_INPUT_NAME = 'avatar';
+    /**
+     * @var string
+     */
+    private string $formAction;
+
     public function toHtml(): string
     {
         $toHtml = parent::toHtml();

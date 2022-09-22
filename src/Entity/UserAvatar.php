@@ -82,9 +82,8 @@ class UserAvatar
                 VALUES(:avatar);
             SQL
         );
-
         $insert->execute([':avatar' => $this->getAvatar()]);
+
         return $this;
     }
-
 }
