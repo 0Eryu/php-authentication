@@ -13,7 +13,7 @@ class UserProfile
     /**
      * @var User Utilisateur.
      */
-    private User $user;
+    protected User $user;
 
     /**
      * @param User $user

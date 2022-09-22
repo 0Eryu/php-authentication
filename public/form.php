@@ -15,9 +15,9 @@ $authentication = new UserAuthentication();
 $p = new WebPage('Authentification');
 
 try {
-    $authentication->logoutIsRequested();
-    $form = $authentication->logoutForm('form.php', 'Se déconnecter');
     $user = $authentication->getUser();
+    $authentication->logoutIfRequested();
+    $form = $authentication->logoutForm('form.php', 'Se déconnecter');
     $userProfile = new UserProfile($user);
     $p->appendContent(
         <<<HTML

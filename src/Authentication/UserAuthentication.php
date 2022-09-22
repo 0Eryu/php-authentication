@@ -137,7 +137,7 @@ class UserAuthentication
      * @return void
      * @throws SessionException
      */
-    public function logoutIsRequested(): void
+    public function logoutIfRequested(): void
     {
         if (isset($_POST[self::LOGOUT_INPUT_NAME])) {
             if (isset($_SESSION[self::SESSION_KEY][self::SESSION_USER_KEY])) {
