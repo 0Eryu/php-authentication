@@ -104,6 +104,7 @@ class UserAvatar
     /**
      * @param string $filename
      * @return bool
+     * @throws EntityNotFoundException
      */
     public function isValidFile(string $filename): bool
     {
@@ -112,6 +113,11 @@ class UserAvatar
         if (mime_content_type($filename) != 'image/png'
             || getimagesize($filename) > $blobMaxSize) {
             $returnValue = false;
+        }
+        if ($returnValue){
+            $userAvatar = $this->findById($this->getId());
+            $userAvatar->setAvatar($filename);
+            $userAvatar->save();
         }
         return $returnValue;
     }

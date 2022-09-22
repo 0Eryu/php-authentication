@@ -17,7 +17,8 @@
     "require": {
         "ext-intl": "*",
         "ext-pdo": "*",
-        "friendsofphp/php-cs-fixer": "^3.11"
+        "friendsofphp/php-cs-fixer": "^3.11",
+      "ext-fileinfo": "*"
     },
     "scripts": {
         "start:linux" : [

@@ -58,8 +58,9 @@ class UserProfileWithAvatar extends UserProfile
             $user = $authentication->getUserFromSession();
             $userAvatar = UserAvatar::findById($user->getId());
             $avatar = file_get_contents($_FILES[self::AVATAR_INPUT_NAME]['tmp_name']);
-            $userAvatar->setAvatar($avatar);
-            $userAvatar->save();
+            $userAvatar->isValidFile($avatar);
+            //$userAvatar->setAvatar($avatar);
+            //$userAvatar->save();
         }
         return $returnValue;
     }
