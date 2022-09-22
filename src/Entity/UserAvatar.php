@@ -100,4 +100,19 @@ class UserAvatar
     {
         return 65535;
     }
+
+    /**
+     * @param string $filename
+     * @return bool
+     */
+    public function isValidFile(string $filename): bool
+    {
+        $blobMaxSize = $this->maxFileSize();
+        $returnValue = true;
+        if (mime_content_type($filename) != 'image/png'
+            || getimagesize($filename) > $blobMaxSize) {
+            $returnValue = false;
+        }
+        return $returnValue;
+    }
 }

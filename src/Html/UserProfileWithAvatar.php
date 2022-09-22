@@ -49,11 +49,11 @@ class UserProfileWithAvatar extends UserProfile
             || $_FILES[self::AVATAR_INPUT_NAME]['error']
             || $_FILES[self::AVATAR_INPUT_NAME]['size'] == 0
             || !is_uploaded_file($_FILES[self::AVATAR_INPUT_NAME]['tmp_name'])
-        ){
+        ) {
             $returnValue = false;
         }
 
-        if ($returnValue){
+        if ($returnValue) {
             $authentication = new UserAuthentication();
             $user = $authentication->getUserFromSession();
             $userAvatar = UserAvatar::findById($user->getId());
