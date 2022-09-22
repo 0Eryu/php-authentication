@@ -92,4 +92,12 @@ class UserAvatar
 
         return $this;
     }
+
+    /**
+     * @return int
+     */
+    public function maxFileSize(): int
+    {
+        return 65535;
+    }
 }
