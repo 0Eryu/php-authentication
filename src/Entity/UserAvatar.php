@@ -19,6 +19,11 @@ class UserAvatar
      */
     private ?string $avatar;
 
+    protected function __construct()
+    {
+    }
+
+
     /**
      * @return int Récupération de l'identifiant de l'avatar.
      */
@@ -78,11 +83,12 @@ class UserAvatar
     {
         $insert = MyPdo::getInstance()->prepare(
             <<<SQL
-                INSERT INTO user (avatar)
-                VALUES(:avatar);
+                UPDATE user 
+                SET avatar = :avatar
+                WHERE id = :id
             SQL
         );
-        $insert->execute([':avatar' => $this->getAvatar()]);
+        $insert->execute([':avatar' => $this->getAvatar(), ':id' => $this->getId()]);
 
         return $this;
     }

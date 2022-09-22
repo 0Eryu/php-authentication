@@ -16,6 +16,7 @@ try {
     $user = $authentication->getUserFromSession();
     //$userProfile = new UserProfile($user);
     $userProfile = new UserProfileWithAvatar($user, $_SERVER['PHP_SELF']);
+    $userProfile->updateAvatar();
     $p->appendContent(
         <<<HTML
             <div>Bonjour {$user->getFirstName()}</div>
