@@ -15,6 +15,6 @@ class UserProfileWithAvatar extends UserProfile
             HTML
         ;
 
-        return '';
+        return $toHtml;
     }
 }

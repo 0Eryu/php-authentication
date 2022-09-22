@@ -61,4 +61,13 @@ class UserAvatar
 
         return $user;
     }
+
+    /**
+     * @param string|null $avatar
+     */
+    public function setAvatar(?string $avatar): void
+    {
+        $this->avatar = $avatar;
+    }
+
 }
