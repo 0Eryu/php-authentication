@@ -6,15 +6,16 @@ use Entity\UserAvatar;
 
 try {
     if (!isset($_GET['userId'])){
-        throw new EntityNotFoundException();
+        throw new EntityNotFoundException('La query string n\'existe pas.');
     }
     $userId = $_GET['userId'];
     $avatar = UserAvatar::findById((int) $userId);
-    var_dump($avatar);
-    //header('Content-Type: image/png');
-    echo $avatar->getPng();
+    $userAvatar = $avatar->getAvatar();
+    if (is_null($userAvatar)){
+        throw new EntityNotFoundException('La query string n\'existe pas.');
+    }
 } catch(EntityNotFoundException $e) {
-    $test = file_get_contents('img/default_avatar.png');
-    header('Content-Type: image/png');
-    echo $test;
+    $userAvatar = file_get_contents('img/default_avatar.png');
 }
+header('Content-Type: image/png');
+echo $userAvatar;

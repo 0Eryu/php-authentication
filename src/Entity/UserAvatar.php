@@ -17,7 +17,7 @@ class UserAvatar
     /**
      * @var ?string Avatar au format PNG pouvant être null.
      */
-    private ?string $png;
+    private ?string $avatar;
 
     /**
      * @return int Récupération de l'identifiant de l'avatar.
@@ -31,9 +31,9 @@ class UserAvatar
      * @return string|null Récupération de la chaine de caractère
      * représentant l'avatar au format PNG, pouvant être null.
      */
-    public function getPng(): ?string
+    public function getAvatar(): ?string
     {
-        return $this->png;
+        return $this->avatar;
     }
 
     /**
