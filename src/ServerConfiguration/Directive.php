@@ -9,22 +9,34 @@ class Directive
      * @param string $directive
      * @return string
      */
-    public function get(string $directive) : string
+    public static function get(string $directive) : string
     {
         return ini_get($directive);
     }
 
-    public function getInBytes(string $directive) : int
+    /**
+     * @param string $directive
+     * @return int
+     */
+    public static function getInBytes(string $directive) : int
     {
-        $directiveValue = $this->get($directive);
-        preg_match('/([0-9]+)([gmk]?)/i', $directiveValue, $matches, PREG_OFFSET_CAPTURE);
+        $directiveValue = Directive::get($directive);
+        preg_match('/([0-9]+)([gmk]?)/i', $directiveValue, $matches);
+
+        $value = (int) $matches[1];
         switch ($matches[2]) {
-            case 'k':
-                $matches[1] * 1024;
-            case 'm':
-                $matches[1] * 1024;
-            case 'g':
-                $matches[1] * 1024;
+            case 'G':
+                $value = $value * 1024;
+            case 'M':
+                $value = $value * 1024;
+            case 'K':
+                $value = $value * 1024;
         }
+        return $$value;
+    }
+
+    public static function getUploadMaxFilesize() : int
+    {
+        return Directive::getInBytes("upload_max_filesize");
     }
 }
