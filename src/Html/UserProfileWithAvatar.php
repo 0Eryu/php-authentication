@@ -7,6 +7,7 @@ namespace Html;
 use Authentication\UserAuthentication;
 use Entity\User;
 use Entity\UserAvatar;
+use ServerConfiguration\Directive;
 
 class UserProfileWithAvatar extends UserProfile
 {
@@ -29,10 +30,12 @@ class UserProfileWithAvatar extends UserProfile
     {
         $avatarInputName = self::AVATAR_INPUT_NAME;
         $toHtml = parent::toHtml();
+        $min = min(Directive::getUploadMaxFilesize(), UserAvatar::maxFileSize());
         $toHtml .=
             <<<HTML
                 <form enctype="multipart/form-data" action={$this->formAction} method="POST">
                     <input type="file" name="{$avatarInputName}" id="{$avatarInputName}" accept="image/png">
+                    <input type="hidden" id="MAX_FILE_SIZE" name="MAX_FILE_SIZE" value="{$min}">
                     <input type="submit" value="Mettre à jour">
                 </form>
                 <img src="/avatar.php?userId={$this->user->getId()}" alt="Avatar de l'utilisateur"/>
@@ -42,6 +45,11 @@ class UserProfileWithAvatar extends UserProfile
         return $toHtml;
     }
 
+    /**
+     * @throws \Service\Exception\SessionException
+     * @throws \Authentication\Exception\NotLoggedInException
+     * @throws \Entity\Exception\EntityNotFoundException
+     */
     public function updateAvatar(): bool
     {
         $returnValue = true;

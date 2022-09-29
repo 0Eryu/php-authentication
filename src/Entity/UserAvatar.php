@@ -96,7 +96,7 @@ class UserAvatar
     /**
      * @return int
      */
-    public function maxFileSize(): int
+    public static function maxFileSize(): int
     {
         return 65535;
     }
