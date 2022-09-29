@@ -1,4 +1,5 @@
 <?php
+
 declare(strict_types=1);
 
 namespace ServerConfiguration;
@@ -9,7 +10,7 @@ class Directive
      * @param string $directive
      * @return string
      */
-    public static function get(string $directive) : string
+    public static function get(string $directive): string
     {
         return ini_get($directive);
     }
@@ -18,7 +19,7 @@ class Directive
      * @param string $directive
      * @return int
      */
-    public static function getInBytes(string $directive) : int
+    public static function getInBytes(string $directive): int
     {
         $directiveValue = Directive::get($directive);
         preg_match('/([0-9]+)([gmk]?)/i', $directiveValue, $matches);
@@ -27,15 +28,20 @@ class Directive
         switch ($matches[2]) {
             case 'G':
                 $value = $value * 1024;
+                // no break
             case 'M':
                 $value = $value * 1024;
+                // no break
             case 'K':
                 $value = $value * 1024;
         }
-        return $$value;
+        return $value;
     }
 
-    public static function getUploadMaxFilesize() : int
+    /**
+     * @return int
+     */
+    public static function getUploadMaxFilesize(): int
     {
         return Directive::getInBytes("upload_max_filesize");
     }
