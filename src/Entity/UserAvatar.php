@@ -6,6 +6,7 @@ namespace Entity;
 
 use Database\MyPdo;
 use Entity\Exception\EntityNotFoundException;
+use ImageManipulation\MyGdImage;
 use PDO;
 
 class UserAvatar
@@ -104,20 +105,13 @@ class UserAvatar
     /**
      * @param string $filename
      * @return bool
-     * @throws EntityNotFoundException
      */
-    public function isValidFile(string $filename): bool
+    public static function isValidFile(string $filename): bool
     {
-        $blobMaxSize = $this->maxFileSize();
+        $blobMaxSize = self::maxFileSize();
         $returnValue = true;
-        if (mime_content_type($filename) != 'image/png'
-            || getimagesize($filename) <= $blobMaxSize) {
+        if (getimagesize($filename) <= $blobMaxSize && mime_content_type($filename) === 'image/png') {
             $returnValue = false;
-        }
-        if ($returnValue) {
-            $userAvatar = $this->findById($this->getId());
-            $userAvatar->setAvatar(file_get_contents($filename));
-            $userAvatar->save();
         }
         return $returnValue;
     }
